@@ -37,9 +37,23 @@ cp app/build/outputs/apk/release/lib/x86_64/libmediakitandroidhelper.so         
 
 cd ../..
 
-zip -r full-arm64-v8a.jar                prefix/arm64-v8a/usr/local/lib/*.so
-zip -r full-armeabi-v7a.jar              prefix/armeabi-v7a/usr/local/lib/*.so
-zip -r full-x86.jar                      prefix/x86/usr/local/lib/*.so
-zip -r full-x86_64.jar                   prefix/x86_64/usr/local/lib/*.so
+mkdir -p temp/lib/arm64-v8a
+mkdir -p temp/lib/armeabi-v7a
+mkdir -p temp/lib/x86
+mkdir -p temp/lib/x86_64
+
+cp prefix/arm64-v8a/usr/local/lib/*.so temp/lib/arm64-v8a/
+cp prefix/armeabi-v7a/usr/local/lib/*.so temp/lib/armeabi-v7a/
+cp prefix/x86/usr/local/lib/*.so temp/lib/x86/
+cp prefix/x86_64/usr/local/lib/*.so temp/lib/x86_64/
+
+cd temp
+
+zip -r ../full-arm64-v8a.jar lib/arm64-v8a
+zip -r ../full-armeabi-v7a.jar lib/armeabi-v7a
+zip -r ../full-x86.jar lib/x86
+zip -r ../full-x86_64.jar lib/x86_64
+
+cd ../
 
 md5sum *.jar
