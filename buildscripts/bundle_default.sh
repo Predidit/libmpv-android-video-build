@@ -30,62 +30,30 @@ sudo chmod +x gradlew
 
 unzip -o app/build/outputs/apk/release/app-release.apk -d app/build/outputs/apk/release
 
-ln -sf "$(pwd)/app/build/outputs/apk/release/lib/arm64-v8a/libmediakitandroidhelper.so" "../../../libmpv/src/main/jniLibs/arm64-v8a"
-ln -sf "$(pwd)/app/build/outputs/apk/release/lib/armeabi-v7a/libmediakitandroidhelper.so" "../../../libmpv/src/main/jniLibs/armeabi-v7a"
-ln -sf "$(pwd)/app/build/outputs/apk/release/lib/x86/libmediakitandroidhelper.so" "../../../libmpv/src/main/jniLibs/x86"
-ln -sf "$(pwd)/app/build/outputs/apk/release/lib/x86_64/libmediakitandroidhelper.so" "../../../libmpv/src/main/jniLibs/x86_64"
+cp app/build/outputs/apk/release/lib/arm64-v8a/libmediakitandroidhelper.so      ../../prefix/arm64-v8a/usr/local/lib
+cp app/build/outputs/apk/release/lib/armeabi-v7a/libmediakitandroidhelper.so    ../../prefix/armeabi-v7a/usr/local/lib
+cp app/build/outputs/apk/release/lib/x86/libmediakitandroidhelper.so            ../../prefix/x86/usr/local/lib
+cp app/build/outputs/apk/release/lib/x86_64/libmediakitandroidhelper.so         ../../prefix/x86_64/usr/local/lib
 
 cd ../..
 
-# --------------------------------------------------
+mkdir -p temp/lib/arm64-v8a
+mkdir -p temp/lib/armeabi-v7a
+mkdir -p temp/lib/x86
+mkdir -p temp/lib/x86_64
 
-cd deps/media_kit/media_kit_native_event_loop
+cp prefix/arm64-v8a/usr/local/lib/*.so temp/lib/arm64-v8a/
+cp prefix/armeabi-v7a/usr/local/lib/*.so temp/lib/armeabi-v7a/
+cp prefix/x86/usr/local/lib/*.so temp/lib/x86/
+cp prefix/x86_64/usr/local/lib/*.so temp/lib/x86_64/
 
-flutter create --org com.alexmercerind --template plugin_ffi --platforms=android .
+cd temp
 
-if ! grep -q android "pubspec.yaml"; then
-  printf "      android:\n        ffiPlugin: true\n" >> pubspec.yaml
-fi
+zip -r ../default-arm64-v8a.jar lib/arm64-v8a
+zip -r ../default-armeabi-v7a.jar lib/armeabi-v7a
+zip -r ../default-x86.jar lib/x86
+zip -r ../default-x86_64.jar lib/x86_64
 
-flutter pub get
-
-cp -a ../../mpv/libmpv/. src/include/
-
-cd example
-
-flutter clean
-flutter build apk --release
-
-unzip -o build/app/outputs/apk/release/app-release.apk -d build/app/outputs/apk/release
-
-cd build/app/outputs/apk/release/
-
-# --------------------------------------------------
-
-rm -r lib/*/libapp.so
-rm -r lib/*/libflutter.so
-
-zip -r "default-arm64-v8a.jar"                lib/arm64-v8a
-zip -r "default-armeabi-v7a.jar"              lib/armeabi-v7a
-zip -r "default-x86.jar"                      lib/x86
-zip -r "default-x86_64.jar"                   lib/x86_64
-
-mkdir -p ../../../../../../../../../../output
-
-cp *.jar ../../../../../../../../../../output
-
-pwd
-
-cd ../../../../../../../../..
-
-pwd
-
-ls -l
-
-cd ../output
-
-pwd
+cd ../
 
 md5sum *.jar
-
-# --------------------------------------------------
