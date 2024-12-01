@@ -57,4 +57,6 @@ zip -r ../encoders-gpl-x86_64.jar lib/x86_64
 
 cd ../
 
+pwd
+
 md5sum *.jar
