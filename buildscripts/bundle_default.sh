@@ -79,6 +79,3 @@ md5sum *.jar
 cd ../../../../../../../../..
 
 # --------------------------------------------------
-
-zip -r debug-symbols-default.zip prefix/*/lib
-cp debug-symbols-default.zip ../output
