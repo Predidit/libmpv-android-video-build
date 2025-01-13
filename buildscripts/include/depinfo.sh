@@ -17,7 +17,7 @@ v_ffmpeg=6.0
 v_mpv=78d43740f52db817d98bcf24fb30a76ab6fa13ff
 v_libogg=1.3.5
 v_libvorbis=1.3.7
-v_libvpx=1.13
+v_libvpx=1.13.0
 
 
 ## Dependency tree
