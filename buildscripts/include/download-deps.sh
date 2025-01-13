@@ -22,10 +22,10 @@ mkdir -p deps && cd deps
 [ ! -d libvorbis ] && $WGET https://github.com/xiph/vorbis/releases/download/v${v_libvorbis}/libvorbis-${v_libvorbis}.tar.gz && tar -xf libvorbis-${v_libvorbis}.tar.gz && mv libvorbis-${v_libvorbis} libvorbis && rm libvorbis-${v_libvorbis}.tar.gz
 
 # libvpx
-[ ! -d libvpx ] && git clone --depth 1 --branch meson-$v_libvpx https://gitlab.freedesktop.org/gstreamer/meson-ports/libvpx.git
+[ ! -d libvpx ] && git clone --depth 1 --branch v$v_libvpx https://gitlab.freedesktop.org/gstreamer/meson-ports/libvpx.git
 
 # libx264
-[ ! -d libx264 ] && git clone --depth 1 https://code.videolan.org/videolan/x264.git --branch master libx264
+[ ! -d libx264 ] && git clone --depth 1 https://code.videolan.org/videolan/x264.git libx264 && cd libx264 && git reset --hard 023112c6f2f575c72e9f26274d183b70996fb542 && cd ..
 
 # ffmpeg
 [ ! -d ffmpeg ] && git clone --depth 1 --branch n$v_ffmpeg https://github.com/FFmpeg/FFmpeg.git ffmpeg
@@ -53,12 +53,12 @@ HEREDOC
 [ ! -d mpv ] && git clone https://github.com/mpv-player/mpv.git mpv && cd mpv && git reset --hard 78d43740f52db817d98bcf24fb30a76ab6fa13ff && cd ..
 
 # fftools_ffi
-[ ! -d fftools_ffi ] && git clone --depth 1 --branch main https://github.com/moffatman/fftools-ffi.git fftools_ffi
+[ ! -d fftools_ffi ] && git clone --depth 1 --branch main https://github.com/moffatman/fftools-ffi.git fftools_ffi && cd fftools_ffi && git reset --hard 10070acb2c090edda86dba431f6c281145ceb221 && cd ..
 
 # media-kit-android-helper
-[ ! -d media-kit-android-helper ] && git clone --depth 1 --branch fix/no-dup-fd https://github.com/media-kit/media-kit-android-helper.git
+[ ! -d media-kit-android-helper ] && git clone --depth 1 --branch fix/no-dup-fd https://github.com/media-kit/media-kit-android-helper.git && cd media-kit-android-helper && git reset --hard 588a8374af0288da6a46d455bec6608812a674b1 && cd ..
 
 # media_kit
-[ ! -d media_kit ] && git clone --depth 1 --single-branch --branch main https://github.com/alexmercerind/media_kit.git
+[ ! -d media_kit ] && git clone --depth 1 --single-branch --branch main https://github.com/alexmercerind/media_kit.git && cd media_kit && git reset --hard 436735bd8d196e2a82bb21ac4463273db1b17e89 && cd ..
 
 cd ..
