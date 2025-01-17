@@ -30,10 +30,6 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
-      - name: Setup Flutter SDK
-        uses: subosito/flutter-action@v1
-        with:
-          channel: "stable"
       - name: Gradle Build Action
         uses: gradle/gradle-build-action@v2.3.3
       - name: Cache
