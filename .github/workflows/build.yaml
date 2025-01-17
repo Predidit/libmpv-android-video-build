@@ -16,7 +16,7 @@ permissions:
   contents: write
 
 env:
-  NDK_VER: 25.1.8937393
+  NDK_VER: 27.2.12479018
 
 jobs:
   build:
