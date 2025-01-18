@@ -56,6 +56,6 @@ HEREDOC
 [ ! -d fftools_ffi ] && git clone --branch main https://github.com/moffatman/fftools-ffi.git fftools_ffi && cd fftools_ffi && git reset --hard 10070acb2c090edda86dba431f6c281145ceb221 && cd ..
 
 # media-kit-android-helper
-[ ! -d media-kit-android-helper ] && git clone --branch fix/no-dup-fd https://github.com/media-kit/media-kit-android-helper.git && cd media-kit-android-helper && git reset --hard 588a8374af0288da6a46d455bec6608812a674b1 && cd ..
+[ ! -d media-kit-android-helper ] && git clone --branch main https://github.com/Predidit/media-kit-android-helper.git && cd media-kit-android-helper && git reset --hard 8fe7b357d2ab50edb76da609fc3170552207ca75 && cd ..
 
 cd ..
