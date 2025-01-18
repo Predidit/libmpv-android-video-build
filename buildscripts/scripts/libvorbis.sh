@@ -20,9 +20,7 @@ sed s/\-mno\-ieee\-fp// -i {configure,configure.ac}
 
 unset CC CXX # meson wants these unset
 
-CFLAGS=-fPIC CXXFLAGS=-fPIC meson setup $build --cross-file "$prefix_dir"/crossfile.txt -Ddefault_library=static \
-	-Dc_extra_args="-D__DATE__=\"\" -D__TIME__=\"\" -frandom-seed=xyz" \
-  	-Dcpp_extra_args="-D__DATE__=\"\" -D__TIME__=\"\" -frandom-seed=xyz"
+CFLAGS=-fPIC CXXFLAGS=-fPIC meson setup $build --cross-file "$prefix_dir"/crossfile.txt -Ddefault_library=static 
 
 meson compile -C $build libvorbis
 DESTDIR="$prefix_dir" ninja -C $build install

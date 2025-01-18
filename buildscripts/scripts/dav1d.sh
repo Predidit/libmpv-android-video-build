@@ -17,9 +17,7 @@ fi
 unset CC CXX # meson wants these unset
 
 meson setup $build --cross-file "$prefix_dir"/crossfile.txt \
-	-Denable_tests=false -Db_lto=true -Dstack_alignment=16 \
-	-Dc_extra_args="-D__DATE__=\"\" -D__TIME__=\"\" -frandom-seed=xyz" \
-  	-Dcpp_extra_args="-D__DATE__=\"\" -D__TIME__=\"\" -frandom-seed=xyz"
+	-Denable_tests=false -Db_lto=true -Dstack_alignment=16 
 
 ninja -C $build -j$cores
 DESTDIR="$prefix_dir" ninja -C $build install

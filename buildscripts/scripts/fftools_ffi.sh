@@ -16,9 +16,7 @@ fi
 
 unset CC CXX # meson wants these unset
 
-CFLAGS=-fPIC CXXFLAGS=-fPIC meson setup $build --cross-file "$prefix_dir"/crossfile.txt \
-	-Dc_extra_args="-D__DATE__=\"\" -D__TIME__=\"\" -frandom-seed=xyz" \
-  	-Dcpp_extra_args="-D__DATE__=\"\" -D__TIME__=\"\" -frandom-seed=xyz"
+CFLAGS=-fPIC CXXFLAGS=-fPIC meson setup $build --cross-file "$prefix_dir"/crossfile.txt 
 
 ninja -C $build -j$cores
 DESTDIR="$prefix_dir" ninja -C $build install

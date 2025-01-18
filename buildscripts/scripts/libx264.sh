@@ -20,9 +20,7 @@ unset CC CXX # meson wants these unset
 
 mkdir $build
 
-meson setup $build --cross-file "$prefix_dir"/crossfile.txt --prefix="$prefix_dir" \
-	-Dc_extra_args="-D__DATE__=\"\" -D__TIME__=\"\" -frandom-seed=xyz" \
-  	-Dcpp_extra_args="-D__DATE__=\"\" -D__TIME__=\"\" -frandom-seed=xyz"
+meson setup $build --cross-file "$prefix_dir"/crossfile.txt --prefix="$prefix_dir" 
 
 meson compile -C $build libx264
 meson install -C $build
