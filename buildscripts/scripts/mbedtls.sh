@@ -14,7 +14,7 @@ fi
 
 $0 clean # separate building not supported, always clean
 
-if [ "ndk_suffix" == "-arm64" ]; then
+if [ "$ndk_suffix" == "-arm64" ]; then
 	make CFLAGS="-fPIC -march=armv8-a+crypto" CXXFLAGS="-fPIC -march=armv8-a+crypto" -j$cores no_test
 else
 	make CFLAGS=-fPIC CXXFLAGS=-fPIC -j$cores no_test
