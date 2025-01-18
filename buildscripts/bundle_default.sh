@@ -51,6 +51,7 @@ cd temp
 
 FIXED_TIME="2025-01-01 00:00:00"
 
+find "lib" -type d -exec touch -d "$FIXED_TIME" {} +
 find "lib/arm64-v8a" -type f -name "*.so" -exec touch -d "$FIXED_TIME" {} +
 find "lib/armeabi-v7a" -type f -name "*.so" -exec touch -d "$FIXED_TIME" {} +
 find "lib/x86" -type f -name "*.so" -exec touch -d "$FIXED_TIME" {} +
