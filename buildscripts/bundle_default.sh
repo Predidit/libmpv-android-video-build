@@ -49,10 +49,10 @@ cp prefix/x86_64/usr/local/lib/*.so temp/lib/x86_64/
 
 cd temp
 
-zip -r ../default-arm64-v8a.jar lib/arm64-v8a
-zip -r ../default-armeabi-v7a.jar lib/armeabi-v7a
-zip -r ../default-x86.jar lib/x86
-zip -r ../default-x86_64.jar lib/x86_64
+zip -r -X ../default-arm64-v8a.jar lib/arm64-v8a
+zip -r -X ../default-armeabi-v7a.jar lib/armeabi-v7a
+zip -r -X ../default-x86.jar lib/x86
+zip -r -X ../default-x86_64.jar lib/x86_64
 
 cd ../
 
