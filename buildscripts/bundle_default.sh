@@ -49,6 +49,13 @@ cp prefix/x86_64/usr/local/lib/*.so temp/lib/x86_64/
 
 cd temp
 
+FIXED_TIME="2025-01-01 00:00:00"
+
+find "lib/arm64-v8a" -type f -name "*.so" -exec touch -d "$FIXED_TIME" {} +
+find "lib/armeabi-v7a" -type f -name "*.so" -exec touch -d "$FIXED_TIME" {} +
+find "lib/x86" -type f -name "*.so" -exec touch -d "$FIXED_TIME" {} +
+find "lib/x86_64" -type f -name "*.so" -exec touch -d "$FIXED_TIME" {} +
+
 zip -r -X ../default-arm64-v8a.jar lib/arm64-v8a
 zip -r -X ../default-armeabi-v7a.jar lib/armeabi-v7a
 zip -r -X ../default-x86.jar lib/x86
