@@ -82,7 +82,7 @@ wrap_mode = 'nodownload'
 c = '$CC'
 cpp = '$CXX'
 ar = '$AR'
-strip = '$ndk_triple-strip'
+strip = '$ndk_triple-strip --strip-all'
 pkgconfig = 'pkg-config'
 [host_machine]
 system = 'android'
