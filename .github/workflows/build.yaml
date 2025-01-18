@@ -29,7 +29,11 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'temurin'  
+          distribution: 'temurin'
+      - name: Setup Flutter SDK
+        uses: subosito/flutter-action@v1
+        with:
+          channel: "stable"  
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
       # - name: Cache
