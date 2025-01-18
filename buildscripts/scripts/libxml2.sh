@@ -27,5 +27,5 @@ cd _build$ndk_suffix
     --with-tree \
     --without-lzma \
 
-make CFLAGS="-fPIC -frandom-seed=xyz" CXXFLAGS="-fPIC -frandom-seed=xyz" -j$cores
+make CFLAGS="-fPIC" CXXFLAGS="-fPIC" -j$cores
 make DESTDIR="$prefix_dir" install
