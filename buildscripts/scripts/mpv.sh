@@ -26,6 +26,8 @@ meson setup $build --cross-file "$prefix_dir"/crossfile.txt \
 	-Diconv=disabled \
 	-Dvulkan=disabled \
    	-Dlibplacebo=disabled \
+	-Dc_extra_args="-D__DATE__=\"\" -D__TIME__=\"\" -frandom-seed=xyz" \
+  	-Dcpp_extra_args="-D__DATE__=\"\" -D__TIME__=\"\" -frandom-seed=xyz" \
  	-Dmanpage-build=disabled
 
 ninja -C $build -j$cores
