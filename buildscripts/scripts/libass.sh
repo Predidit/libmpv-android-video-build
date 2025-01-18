@@ -26,5 +26,5 @@ cd _build$ndk_suffix
 	--disable-shared \
 	--disable-require-system-font-provider
 
-make CFLAGS="-fPIC -frandom-seed=xyz" CXXFLAGS="-fPIC -frandom-seed=xyz" -j$cores
+make CFLAGS="-frandom-seed=xyz" CXXFLAGS="-frandom-seed=xyz" -j$cores
 make DESTDIR="$prefix_dir" install
