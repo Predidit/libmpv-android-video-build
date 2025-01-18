@@ -15,9 +15,9 @@ fi
 $0 clean # separate building not supported, always clean
 
 if [ "$ndk_suffix" == "-arm64" ]; then
-	make CFLAGS="-fPIC -D__DATE__=\"\" -D__TIME__=\"\" -frandom-seed=xyz -march=armv8-a+crypto" CXXFLAGS="-fPIC -D__DATE__=\"\" -D__TIME__=\"\" -frandom-seed=xyz -march=armv8-a+crypto" -j$cores no_test
+	make CFLAGS="-fPIC -frandom-seed=xyz -march=armv8-a+crypto" CXXFLAGS="-fPIC -frandom-seed=xyz -march=armv8-a+crypto" -j$cores no_test
 else
-	make CFLAGS="-fPIC -D__DATE__=\"\" -D__TIME__=\"\" -frandom-seed=xyz" CXXFLAGS="-fPIC -D__DATE__=\"\" -D__TIME__=\"\" -frandom-seed=xyz" -j$cores no_test
+	make CFLAGS="-fPIC -frandom-seed=xyz" CXXFLAGS="-fPIC -frandom-seed=xyz" -j$cores no_test
 fi
 
 make CFLAGS=-fPIC CXXFLAGS=-fPIC DESTDIR="$prefix_dir" install
