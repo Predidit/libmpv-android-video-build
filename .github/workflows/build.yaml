@@ -46,6 +46,7 @@ jobs:
       - name: Bundle (default)
         working-directory: ./buildscripts
         run: |
+          echo "deb http://deb.debian.org/debian bookworm-backports main" | tee /etc/apt/sources.list.d/bookworm-backports.list
           apt update
           apt install -y sudo gcc-multilib libc-dev make automake pkg-config libtool nasm python3-jsonschema wget python3-jinja2 zip python3-pip
           apt-get install -t bookworm-backports meson
