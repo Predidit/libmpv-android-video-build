@@ -22,7 +22,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-24.04
-    container: docker.io/debian:bookworm
+    container: docker.io/debian:bookworm-slim
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
