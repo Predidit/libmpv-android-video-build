@@ -46,6 +46,8 @@ jobs:
       - name: Bundle (default)
         working-directory: ./buildscripts
         run: |
+          apt update
+          apt install -y sudo
           sudo chmod +x bundle_default.sh
           ./bundle_default.sh
       # - name: Bundle (full)
