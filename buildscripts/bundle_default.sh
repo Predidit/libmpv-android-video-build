@@ -57,10 +57,10 @@ find "lib/armeabi-v7a" -type f -name "*.so" -exec touch -d "$FIXED_TIME" {} +
 find "lib/x86" -type f -name "*.so" -exec touch -d "$FIXED_TIME" {} +
 find "lib/x86_64" -type f -name "*.so" -exec touch -d "$FIXED_TIME" {} +
 
-zip -r -X ../default-arm64-v8a.jar lib/arm64-v8a
-zip -r -X ../default-armeabi-v7a.jar lib/armeabi-v7a
-zip -r -X ../default-x86.jar lib/x86
-zip -r -X ../default-x86_64.jar lib/x86_64
+find lib/arm64-v8a -type f | sort | zip -r -X ../default-arm64-v8a.jar -@
+find lib/armeabi-v7a -type f | sort | zip -r -X ../default-armeabi-v7a.jar -@
+find lib/x86 -type f | sort | zip -r -X ../default-x86.jar -@
+find lib/x86_64 -type f | sort | zip -r -X ../default-x86_64.jar -@
 
 cd ../
 
