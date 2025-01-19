@@ -90,8 +90,8 @@ cpu_family = '$cpu_family'
 cpu = '${CC%%-*}'
 endian = 'little'
 [properties]
-c_link_args = ['--build-id=none']
-cpp_link_args = ['--build-id=none']
+c_link_args = ['-Wl,--build-id=none']
+cpp_link_args = ['-Wl,--build-id=none']
 CROSSFILE
 }
 
