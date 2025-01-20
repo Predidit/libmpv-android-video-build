@@ -9,20 +9,6 @@
 
 os_ndk="linux"
 
-mkdir -p sdk && cd sdk
-
-# Android SDK
-if [ ! -d "android-sdk-${os}" ]; then
-	$WGET "https://dl.google.com/android/repository/commandlinetools-${os}-${v_sdk}.zip"
-	mkdir "android-sdk-${os}"
-	unzip -q -d "android-sdk-${os}" "commandlinetools-${os}-${v_sdk}.zip"
-	rm "commandlinetools-${os}-${v_sdk}.zip"
-fi
-sdkmanager () {
-	local exe="./android-sdk-$os/cmdline-tools/latest/bin/sdkmanager"
-	[ -x "$exe" ] || exe="./android-sdk-$os/cmdline-tools/bin/sdkmanager"
-	"$exe" --sdk_root="${ANDROID_HOME}" "$@"
-}
 echo y | sdkmanager \
 	"platforms;android-33" \
 	"build-tools;${v_sdk_build_tools}" \
@@ -31,5 +17,3 @@ echo y | sdkmanager \
 
 echo "checkPoint"
 echo $ANDROID_HOME
-
-cd ..

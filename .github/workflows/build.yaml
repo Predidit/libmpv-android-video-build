@@ -44,11 +44,13 @@ jobs:
       #   with:
       #     path: /usr/local/lib/android/sdk/ndk/${{ env.NDK_VER }}
       #     key: ${{ runner.os }}-${{ env.NDK_VER }}
-      - name: Symlink SDK
-        working-directory: ./buildscripts
-        run: |
-          mkdir sdk
-          ln -s ${ANDROID_HOME} ./sdk/android-sdk-linux
+      # - name: Symlink SDK
+      #   working-directory: ./buildscripts
+      #   run: |
+      #     mkdir sdk
+      #     ln -s ${ANDROID_HOME} ./sdk/android-sdk-linux
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
       - name: Bundle (default)
         working-directory: ./buildscripts
         run: |
