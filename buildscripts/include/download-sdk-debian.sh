@@ -27,4 +27,7 @@ echo y | sdkmanager \
 	"ndk;${v_ndk}" \
 	"cmake;3.22.1"
 
+echo "checkPoint"
+echo $ANDROID_HOME
+
 cd ..
