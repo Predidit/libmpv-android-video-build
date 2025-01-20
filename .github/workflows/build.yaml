@@ -49,7 +49,6 @@ jobs:
           echo "deb http://deb.debian.org/debian bookworm-backports main" | tee /etc/apt/sources.list.d/bookworm-backports.list
           apt update
           apt install -y sudo git zip gcc-multilib libc-dev make automake pkg-config libtool nasm wget
-          apt-get install -y -t bookworm-backports meson
           sudo chmod +x bundle_default.sh
           ./bundle_default.sh
       # - name: Bundle (full)
