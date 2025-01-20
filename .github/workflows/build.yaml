@@ -26,6 +26,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Install dependency
+        run: |
+          apt update
+          apt install -y sudo git zip gcc-multilib libc-dev make automake pkg-config libtool nasm wget
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -46,8 +50,6 @@ jobs:
       - name: Bundle (default)
         working-directory: ./buildscripts
         run: |
-          apt update
-          apt install -y sudo git zip gcc-multilib libc-dev make automake pkg-config libtool nasm wget
           sudo chmod +x bundle_default.sh
           ./bundle_default.sh
       # - name: Bundle (full)
