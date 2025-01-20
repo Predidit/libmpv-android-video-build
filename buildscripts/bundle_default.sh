@@ -1,5 +1,3 @@
-#!/bin/bash -e
-
 . ./include/path.sh # load $ANDROID_HOME var
 
 # --------------------------------------------------
