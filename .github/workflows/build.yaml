@@ -56,6 +56,8 @@ jobs:
           sed -i 's/download-sdk\.sh/download-sdk-debian\.sh/g' download.sh
           sudo chmod +x include/download-sdk-debian.sh
           sudo chmod +x bundle_default.sh
+          echo "checkPoint"
+          echo $ANDROID_HOME
           ./bundle_default.sh
       # - name: Bundle (full)
       #   working-directory: ./buildscripts
