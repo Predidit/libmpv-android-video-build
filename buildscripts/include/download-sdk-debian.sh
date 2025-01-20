@@ -7,6 +7,8 @@
 [ -z "$TRAVIS" ] && TRAVIS=0 # skip steps not required for CI?
 [ -z "$WGET" ] && WGET=wget # possibility of calling wget differently
 
+os_ndk="linux"
+
 mkdir -p sdk && cd sdk
 
 # Android SDK
