@@ -30,6 +30,7 @@ cd deps/media-kit-android-helper
 sudo chmod +x gradlew
 echo "checkPoint"
 echo $ANDROID_HOME
+export ANDROID_HOME=$ANDROID_HOME
 ./gradlew assembleRelease
 
 unzip -o app/build/outputs/apk/release/app-release.apk -d app/build/outputs/apk/release
