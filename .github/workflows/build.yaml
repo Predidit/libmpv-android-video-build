@@ -60,6 +60,7 @@ jobs:
         run: |
           sed -i -e 's/sudo//g' *.sh
           sed -i 's/download-sdk\.sh/download-sdk-debian\.sh/g' download.sh
+          sed -i -e '/git reset --hard/d' patch.sh
           sudo chmod +x include/download-sdk-debian.sh
           sudo chmod +x bundle_default.sh
           ./bundle_default.sh
