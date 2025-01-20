@@ -28,8 +28,10 @@ jobs:
         uses: actions/checkout@v4
       - name: Install dependency
         run: |
+          echo "deb http://deb.debian.org/debian bookworm-backports main" | tee /etc/apt/sources.list.d/bookworm-backports.list
           apt update
           apt install -y sudo git zip gcc-multilib libc-dev make automake pkg-config libtool nasm wget
+          apt install -y -t bookworm-backports meson
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -50,6 +52,8 @@ jobs:
       - name: Bundle (default)
         working-directory: ./buildscripts
         run: |
+          sed -i -e 's/sudo//g' *.sh
+          sed -i -e '/download-sdk/d' download.sh
           sudo chmod +x bundle_default.sh
           ./bundle_default.sh
       # - name: Bundle (full)
