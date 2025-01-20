@@ -53,7 +53,7 @@ jobs:
         working-directory: ./buildscripts
         run: |
           sed -i -e 's/sudo//g' *.sh
-          sed -i -e '/download-sdk/d' download.sh
+          sed -i 's/download-sdk\.sh/download-sdk-debian\.sh/g' download.sh
           sudo chmod +x bundle_default.sh
           ./bundle_default.sh
       # - name: Bundle (full)
