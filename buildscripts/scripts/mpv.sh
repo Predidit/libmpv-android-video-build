@@ -16,7 +16,10 @@ fi
 
 unset CC CXX # meson wants these unset
 
+sed -i -e "s/meson.build_options()/''/" meson.build
+
 meson setup $build --cross-file "$prefix_dir"/crossfile.txt \
+	--strip \
 	--prefer-static \
 	--default-library shared \
 	-Dgpl=false \
