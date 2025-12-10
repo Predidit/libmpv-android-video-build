@@ -1,23 +1,25 @@
+diff --git a/libavformat/hls.c b/libavformat/hls.c
+index 8a96a37..579316d 100644
 --- a/libavformat/hls.c
 +++ b/libavformat/hls.c
-@@ -84,6 +84,8 @@
+@@ -82,6 +82,8 @@ struct segment {
      uint8_t iv[16];
      /* associated Media Initialization Section, treated as a segment */
      struct segment *init_section;
 +    /* Kazumi: Segment follows a DISCONTINUITY tag */
 +    int after_discontinuity;
  };
-
+ 
  struct rendition;
-@@ -222,6 +224,7 @@ typedef struct HLSContext {
+@@ -220,6 +222,7 @@ typedef struct HLSContext {
      AVIOInterruptCB *interrupt_callback;
      AVDictionary *avio_opts;
      AVDictionary *seg_format_opts;
 +    int seg_allow_img;
      char *allowed_extensions;
-     char *allowed_segment_extensions;
-     int extension_picky;
-@@ -230,6 +233,12 @@ typedef struct HLSContext {
+     int max_reload;
+     int http_persistent;
+@@ -228,6 +231,12 @@ typedef struct HLSContext {
      int seg_max_retry;
      AVIOContext *playlist_pb;
      HLSCryptoContext  crypto_ctx;
@@ -28,18 +30,18 @@
 +    int in_ad_segment;              /* Currently in ad segment */
 +    int after_seek;                 /* Flag to ignore PTS jump after seek */
  } HLSContext;
-
+ 
  static void free_segment_dynarray(struct segment **segments, int n_segments)
-@@ -753,6 +762,8 @@ static int parse_playlist(HLSContext *c, const char *url,
+@@ -746,6 +755,8 @@ static int parse_playlist(HLSContext *c, const char *url,
      struct segment **prev_segments = NULL;
      int prev_n_segments = 0;
      int64_t prev_start_seq_no = -1;
 +    /* Kazumi: Track if next segment follows DISCONTINUITY */
 +    int next_seg_after_discontinuity = 0;
-
+ 
      if (is_http && !in && c->http_persistent && c->playlist_pb) {
          in = c->playlist_pb;
-@@ -919,6 +930,15 @@ static int parse_playlist(HLSContext *c, const char *url,
+@@ -912,6 +923,15 @@ static int parse_playlist(HLSContext *c, const char *url,
          } else if (av_strstart(line, "#EXT-X-ENDLIST", &ptr)) {
              if (pls)
                  pls->finished = 1;
@@ -55,9 +57,9 @@
          } else if (av_strstart(line, "#EXTINF:", &ptr)) {
              is_segment = 1;
              duration   = atof(ptr) * AV_TIME_BASE;
-@@ -1010,6 +1030,9 @@ static int parse_playlist(HLSContext *c, const char *url,
+@@ -1003,6 +1023,9 @@ static int parse_playlist(HLSContext *c, const char *url,
                  }
-
+ 
                  seg->init_section = cur_init_section;
 +                /* Kazumi: Mark segment as following discontinuity */
 +                seg->after_discontinuity = next_seg_after_discontinuity;
@@ -65,16 +67,16 @@
              }
          }
      }
-@@ -1939,6 +1962,8 @@ static int hls_read_header(AVFormatContext *s)
+@@ -1941,6 +1964,8 @@ static int hls_read_header(AVFormatContext *s)
      c->first_packet = 1;
      c->first_timestamp = AV_NOPTS_VALUE;
      c->cur_timestamp = AV_NOPTS_VALUE;
 +    /* Kazumi: Initialize ad filtering state */
 +    c->last_main_pts = AV_NOPTS_VALUE;
-
+ 
      if ((ret = ffio_copy_url_options(s->pb, &c->avio_opts)) < 0)
          return ret;
-@@ -2167,12 +2192,34 @@ static int hls_read_header(AVFormatContext *s)
+@@ -2112,7 +2137,30 @@ static int hls_read_header(AVFormatContext *s)
              pls->ctx->max_analyze_duration = s->max_analyze_duration > 0 ? s->max_analyze_duration : 4 * AV_TIME_BASE;
              pls->ctx->interrupt_callback = s->interrupt_callback;
              url = av_strdup(pls->segments[0]->url);
@@ -90,7 +92,7 @@
 +                };
 +// optional: ffifmt(av_find_input_format("gif" or "gif_pipe" or "png_pipe"))->read_probe
 +                int max_score = AVPROBE_SCORE_MAX - 2; // png_pipe, gif, gif_pipe score >= AVPROBE_SCORE_MAX - 1
-+                const AVInputFormat* img_fmt = av_probe_input_format2(&pd, 1, &max_score); //
++                const AVInputFormat* img_fmt = av_probe_input_format2(&pd, 1, &max_score);
 +                if (img_fmt) {
 +                    if (av_strstart(img_fmt->name, "png", NULL)) { // "png_pipe"
 +                        skip = 3; // skip until ts sync byte 'G'(0x47)
@@ -103,17 +105,12 @@
 +            }
 +
 +            ret = av_probe_input_buffer(&pls->pb.pub, &in_fmt, url, NULL, skip, 0);
-
-             for (int n = 0; n < pls->n_segments; n++)
-                 if (ret >= 0)
-                     ret = test_segment(s, in_fmt, pls, pls->segments[n]);
--
              if (ret < 0) {
                  /* Free the ctx - it isn't initialized properly at this point,
                  * so avformat_close_input shouldn't be called. If
-@@ -2328,6 +2375,68 @@ reload:
+@@ -2325,6 +2373,67 @@ static int hls_read_packet(AVFormatContext *s, AVPacket *pkt)
                  }
-
+ 
                  seg = current_segment(pls);
 +
 +                /* Kazumi: PTS-based ad filtering - filter ALL packets (audio & video) */
@@ -175,11 +172,11 @@
 +                        }
 +                    }
 +                }
-+                packet_ok:
-
++
                  if (seg && seg->key_type == KEY_SAMPLE_AES && !strstr(pls->ctx->iformat->name, "mov")) {
                      enum AVCodecID codec_id = pls->ctx->streams[pls->pkt->stream_index]->codecpar->codec_id;
-@@ -2441,6 +2550,9 @@ static int hls_read_seek(AVFormatContext *s, int stream_index,
+                     memcpy(c->crypto_ctx.iv, seg->iv, sizeof(seg->iv));
+@@ -2438,6 +2547,9 @@ static int hls_read_seek(AVFormatContext *s, int stream_index,
                                 int64_t timestamp, int flags)
  {
      HLSContext *c = s->priv_data;
@@ -189,7 +186,7 @@
      struct playlist *seek_pls = NULL;
      int i, j;
      int stream_subdemuxer_index;
-@@ -2590,6 +2702,10 @@ static const AVOption hls_options[] = {
+@@ -2562,6 +2674,10 @@ static const AVOption hls_options[] = {
          OFFSET(seg_format_opts), AV_OPT_TYPE_DICT, {.str = NULL}, 0, 0, FLAGS},
      {"seg_max_retry", "Maximum number of times to reload a segment on error.",
       OFFSET(seg_max_retry), AV_OPT_TYPE_INT, {.i64 = 0}, 0, INT_MAX, FLAGS},
@@ -199,4 +196,4 @@
 +        OFFSET(hls_ad_filter), AV_OPT_TYPE_BOOL, {.i64 = 0}, 0, 1, FLAGS},
      {NULL}
  };
-
+ 
