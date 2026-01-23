@@ -20,8 +20,7 @@ abi=armeabi-v7a
 [[ "$ndk_triple" == "i686"* ]] && abi=x86
 
 # build using the NDK's scripts, but keep object files in our build dir
-shaderc_dir="$(dirname "$(which ndk-build)")/sources/third_party/shaderc"
-cd "$shaderc_dir"
+cd "$(dirname "$(which ndk-build)")/sources/third_party/shaderc"
 ndk-build -j$cores \
 	NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=Android.mk \
 	APP_PLATFORM=android-26 APP_STL=c++_shared APP_ABI=$abi \
@@ -29,21 +28,16 @@ ndk-build -j$cores \
 	libshaderc_combined
 
 cd "$builddir"
-mkdir -p "$prefix_dir/include"
-cp -r "$shaderc_dir/include/"* "$prefix_dir/include/"
-cp libs/$abi/libshaderc.a "$prefix_dir/lib/libshaderc_combined.a"
+cp -r include/* "$prefix_dir/include"
+cp libs/*/$abi/libshaderc.a "$prefix_dir/lib/libshaderc_combined.a"
 
 # create a pkgconfig file
 # 'libc++' instead of 'libstdc++': workaround for meson linking bug
 mkdir -p "$prefix_dir"/lib/pkgconfig
-cat >"$prefix_dir"/lib/pkgconfig/shaderc.pc <<EOF
-prefix=$prefix_dir
-includedir=\${prefix}/include
-libdir=\${prefix}/lib
-
-Name: shaderc
-Description: Tools and libraries for shader compilation
-Version: 2022.1
-Libs: -L\${libdir} -lshaderc_combined -lc++
-Cflags: -I\${includedir}
-EOF
+cat >"$prefix_dir"/lib/pkgconfig/shaderc_combined.pc <<"END"
+Name: shaderc_combined
+Description:
+Version: 2022.3-unknown
+Libs: -L/usr/lib -lshaderc_combined
+Cflags: -I/usr/include
+END
