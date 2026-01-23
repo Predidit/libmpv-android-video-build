@@ -31,7 +31,7 @@ ndk-build -j$cores \
 cd "$builddir"
 mkdir -p "$prefix_dir/include"
 cp -r "$shaderc_dir/include/"* "$prefix_dir/include/"
-cp libs/*/$abi/libshaderc.a "$prefix_dir/lib/libshaderc_combined.a"
+cp libs/$abi/libshaderc.a "$prefix_dir/lib/libshaderc_combined.a"
 
 # create a pkgconfig file
 # 'libc++' instead of 'libstdc++': workaround for meson linking bug
