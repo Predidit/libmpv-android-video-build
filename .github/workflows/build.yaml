@@ -10,6 +10,11 @@ on:
         description: 'Log level'
         required: true
         default: 'warning'
+      release:
+        description: 'Create draft release'
+        required: false
+        type: boolean
+        default: false
   pull_request:
 
 permissions:
@@ -61,7 +66,7 @@ jobs:
           name: artifact
           path: /home/runner/work/libmpv-android-video-build/libmpv-android-video-build/buildscripts/*.jar
       - uses: softprops/action-gh-release@v1
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' || inputs.release == true
         with:
           draft: true
           prerelease: false
