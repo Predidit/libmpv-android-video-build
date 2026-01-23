@@ -15,6 +15,7 @@ v_dav1d=1.2.0
 v_libxml2=2.10.3
 v_ffmpeg=7.1
 v_mpv=32a164cc017acab50389f2194f720ccfd0b01a28
+v_libplacebo=7.351.0
 v_libogg=1.3.5
 v_libvorbis=1.3.7
 v_libvpx=1.13.0
