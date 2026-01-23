@@ -20,7 +20,8 @@ abi=armeabi-v7a
 [[ "$ndk_triple" == "i686"* ]] && abi=x86
 
 # build using the NDK's scripts, but keep object files in our build dir
-cd "$(dirname "$(which ndk-build)")/sources/third_party/shaderc"
+shaderc_dir="$(dirname "$(which ndk-build)")/sources/third_party/shaderc"
+cd "$shaderc_dir"
 ndk-build -j$cores \
 	NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=Android.mk \
 	APP_PLATFORM=android-26 APP_STL=c++_shared APP_ABI=$abi \
@@ -28,7 +29,8 @@ ndk-build -j$cores \
 	libshaderc_combined
 
 cd "$builddir"
-cp -r include/* "$prefix_dir/include"
+mkdir -p "$prefix_dir/include"
+cp -r "$shaderc_dir/include/"* "$prefix_dir/include/"
 cp libs/*/$abi/libshaderc.a "$prefix_dir/lib/libshaderc_combined.a"
 
 # create a pkgconfig file
