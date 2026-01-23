@@ -38,7 +38,7 @@ dep_harfbuzz=()
 dep_libass=(freetype fribidi harfbuzz)
 dep_lua=()
 dep_shaderc=()
-dep_libplacebo=()
+dep_libplacebo=(shaderc)
 if [ -n "$ENCODERS_GPL" ]; then
 	dep_mpv=(ffmpeg libass libplacebo fftools_ffi)
 else
