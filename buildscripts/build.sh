@@ -97,12 +97,19 @@ CROSSFILE
 	local android_api=21
 	local prebuilt_arch="linux-x86_64"
 	[[ "$OSTYPE" == "darwin"* ]] && prebuilt_arch="darwin-x86_64"
+	local ndk_vulkan_lib="$ndk_root/toolchains/llvm/prebuilt/${prebuilt_arch}/sysroot/usr/lib/${ndk_triple}/${android_api}"
+	local ndk_vulkan_inc="$ndk_root/toolchains/llvm/prebuilt/${prebuilt_arch}/sysroot/usr/include"
+	
 	mkdir -p "$prefix_dir/lib/pkgconfig"
+	
+	# Create symlink to Vulkan library in prefix lib directory
+	ln -sf "$ndk_vulkan_lib/libvulkan.so" "$prefix_dir/lib/libvulkan.so"
+	
 	cat >"$prefix_dir/lib/pkgconfig/vulkan.pc" <<VULKAN_PC
-prefix=$ndk_root
+prefix=$prefix_dir
 exec_prefix=\${prefix}
-includedir=\${prefix}/toolchains/llvm/prebuilt/${prebuilt_arch}/sysroot/usr/include
-libdir=\${prefix}/toolchains/llvm/prebuilt/${prebuilt_arch}/sysroot/usr/lib/${ndk_triple}/${android_api}
+includedir=$ndk_vulkan_inc
+libdir=\${prefix}/lib
 
 Name: Vulkan-Loader
 Description: Vulkan Loader
