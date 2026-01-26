@@ -94,7 +94,7 @@ CROSSFILE
 
 	# Create Vulkan pkg-config file for Android NDK
 	local ndk_root="$ANDROID_HOME/ndk/$v_ndk"
-	local vulkan_api=21
+	local android_api=21
 	local prebuilt_arch="linux-x86_64"
 	[[ "$OSTYPE" == "darwin"* ]] && prebuilt_arch="darwin-x86_64"
 	mkdir -p "$prefix_dir/lib/pkgconfig"
@@ -102,11 +102,11 @@ CROSSFILE
 prefix=$ndk_root
 exec_prefix=\${prefix}
 includedir=\${prefix}/toolchains/llvm/prebuilt/${prebuilt_arch}/sysroot/usr/include
-libdir=\${prefix}/toolchains/llvm/prebuilt/${prebuilt_arch}/sysroot/usr/lib/${ndk_triple}/${vulkan_api}
+libdir=\${prefix}/toolchains/llvm/prebuilt/${prebuilt_arch}/sysroot/usr/lib/${ndk_triple}/${android_api}
 
 Name: Vulkan-Loader
 Description: Vulkan Loader
-Version: 1.3.${vulkan_api}
+Version: 1.3.290
 Libs: -L\${libdir} -lvulkan
 Cflags: -I\${includedir}
 VULKAN_PC
