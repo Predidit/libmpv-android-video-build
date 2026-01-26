@@ -94,7 +94,7 @@ CROSSFILE
 
 	# Create Vulkan pkg-config file for Android NDK
 	local ndk_root="$ANDROID_HOME/ndk/$v_ndk"
-	local android_api=21
+	local android_api=24
 	local prebuilt_arch="linux-x86_64"
 	[[ "$OSTYPE" == "darwin"* ]] && prebuilt_arch="darwin-x86_64"
 	local ndk_vulkan_lib="$ndk_root/toolchains/llvm/prebuilt/${prebuilt_arch}/sysroot/usr/lib/${ndk_triple}/${android_api}"
