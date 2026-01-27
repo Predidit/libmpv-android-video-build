@@ -16,7 +16,7 @@ v_libxml2=2.10.3
 v_ffmpeg=7.1
 v_mpv=32a164cc017acab50389f2194f720ccfd0b01a28
 v_libplacebo=7.351.0
-V_LCMS=lcms2.17
+v_lcms2=lcms2.17
 v_libogg=1.3.5
 v_libvorbis=1.3.7
 v_libvpx=1.13.0
@@ -39,7 +39,7 @@ dep_harfbuzz=()
 dep_libass=(freetype fribidi harfbuzz)
 dep_lua=()
 dep_shaderc=()
-dep_libplacebo=(shaderc lcms)
+dep_libplacebo=(shaderc lcms2)
 if [ -n "$ENCODERS_GPL" ]; then
 	dep_mpv=(ffmpeg libass libplacebo fftools_ffi)
 else
