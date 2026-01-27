@@ -42,6 +42,9 @@ mkdir -p deps && cd deps
 # libass
 [ ! -d libass ] && git clone --depth 1 --branch $v_libass https://github.com/libass/libass.git libass
 
+# lcms
+[ ! -d lcms ] && git clone --depth 1 -b $V_LCMS https://github.com/mm2/Little-CMS.git lcms
+
 # shaderc
 mkdir -p shaderc
 cat >shaderc/README <<'HEREDOC'
