@@ -91,32 +91,6 @@ cpu_family = '$cpu_family'
 cpu = '${CC%%-*}'
 endian = 'little'
 CROSSFILE
-
-	# Create Vulkan pkg-config file for Android NDK
-	local ndk_root="$ANDROID_HOME/ndk/$v_ndk"
-	local android_api=24
-	local prebuilt_arch="linux-x86_64"
-	[[ "$OSTYPE" == "darwin"* ]] && prebuilt_arch="darwin-x86_64"
-	local ndk_vulkan_lib="$ndk_root/toolchains/llvm/prebuilt/${prebuilt_arch}/sysroot/usr/lib/${ndk_triple}/${android_api}"
-	local ndk_vulkan_inc="$ndk_root/toolchains/llvm/prebuilt/${prebuilt_arch}/sysroot/usr/include"
-	
-	mkdir -p "$prefix_dir/lib/pkgconfig"
-	
-	# Create symlink to Vulkan library in prefix lib directory
-	ln -sf "$ndk_vulkan_lib/libvulkan.so" "$prefix_dir/lib/libvulkan.so"
-	
-	cat >"$prefix_dir/lib/pkgconfig/vulkan.pc" <<VULKAN_PC
-prefix=$prefix_dir
-exec_prefix=\${prefix}
-includedir=$ndk_vulkan_inc
-libdir=\${prefix}/lib
-
-Name: Vulkan-Loader
-Description: Vulkan Loader
-Version: 1.3.290
-Libs: -L\${libdir} -lvulkan
-Cflags: -I\${includedir}
-VULKAN_PC
 }
 
 build () {
