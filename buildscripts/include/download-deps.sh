@@ -42,8 +42,8 @@ mkdir -p deps && cd deps
 # libass
 [ ! -d libass ] && git clone --depth 1 --branch $v_libass https://github.com/libass/libass.git libass
 
-# lcms
-[ ! -d lcms ] && git clone --depth 1 -b $v_lcms2 https://github.com/mm2/Little-CMS.git lcms
+# lcms2
+[ ! -d lcms2 ] && git clone --depth 1 -b $v_lcms2 https://github.com/mm2/Little-CMS.git lcms2
 
 # shaderc
 mkdir -p shaderc
