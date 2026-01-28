@@ -1,26 +1,23 @@
-diff --git a/src/glsl/spirv.c b/src/glsl/spirv.c
-index 8317ed7..f7f4104 100644
---- a/src/glsl/spirv.c
-+++ b/src/glsl/spirv.c
-@@ -31,6 +31,21 @@ static const struct spirv_compiler *compilers[] = {
- 
- pl_spirv pl_spirv_create(pl_log log, struct pl_spirv_version spirv_ver)
- {
-+    pl_info(log, "Creating SPIR-V compiler with requested versions: "
-+            "SPIR-V %u.%u, Vulkan %u.%u",
-+            spirv_ver.spv_version >> 16, (spirv_ver.spv_version >> 8) & 0xff,
-+            spirv_ver.env_version >> 22, (spirv_ver.env_version >> 12) & 0x3ff);
-+
-+    const uint32_t min_spirv = PL_SPV_VERSION(1, 5);
-+    const uint32_t min_vulkan = PL_VLK_VERSION(1, 2);
+diff --git a/src/glsl/spirv_shaderc.c b/src/glsl/spirv_shaderc.c
+index e384382..064f128 100644
+--- a/src/glsl/spirv_shaderc.c
++++ b/src/glsl/spirv_shaderc.c
+@@ -86,8 +86,16 @@ static pl_str shaderc_compile(pl_spirv spirv, void *alloc,
+     shaderc_compile_options_set_optimization_level(opts,
+             shaderc_optimization_level_performance);
+     shaderc_compile_options_set_target_spirv(opts, spirv->version.spv_version);
+-    shaderc_compile_options_set_target_env(opts, shaderc_target_env_vulkan,
+-                                                 spirv->version.env_version);
 +    
-+    if (spirv_ver.env_version < min_vulkan) {
-+        pl_info(log, "Requested Vulkan version too low (< 1.2), clamping to minimum: "
-+                "SPIR-V 1.5, Vulkan 1.2");
-+        spirv_ver.env_version = min_vulkan;
-+        spirv_ver.spv_version = min_spirv;
++    // shaderc (r27c) only supports up to vulkan 1.3
++    uint32_t env_ver = spirv->version.env_version;
++    if (env_ver > VK_API_VERSION_1_3) {
++        PL_WARN(spirv, "shaderc does not support vulkan %d.%d, falling back to vulkan 1.3",
++                VK_API_VERSION_MAJOR(env_ver), VK_API_VERSION_MINOR(env_ver));
++        env_ver = VK_API_VERSION_1_3;
 +    }
-+
-     for (int i = 0; i < PL_ARRAY_SIZE(compilers); i++) {
-         pl_spirv spirv = compilers[i]->create(log, spirv_ver);
-         if (!spirv)
++    
++    shaderc_compile_options_set_target_env(opts, shaderc_target_env_vulkan, env_ver);
+ 
+     for (int i = 0; i < 3; i++) {
+         shaderc_compile_options_set_limit(opts,
