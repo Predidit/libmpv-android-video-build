@@ -20,7 +20,6 @@ v_lcms2=lcms2.17
 v_libogg=1.3.5
 v_libvorbis=1.3.7
 v_libvpx=1.13.0
-v_shaderc=2026.1
 
 
 ## Dependency tree

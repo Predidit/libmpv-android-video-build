@@ -46,7 +46,11 @@ mkdir -p deps && cd deps
 [ ! -d lcms2 ] && git clone --depth 1 -b $v_lcms2 https://github.com/mm2/Little-CMS.git lcms2
 
 # shaderc
-[ ! -d shaderc ] && git clone --depth 1 --branch v$v_shaderc --recurse-submodules https://github.com/google/shaderc.git shaderc
+mkdir -p shaderc
+cat >shaderc/README <<'HEREDOC'
+Shaderc sources are provided by the NDK.
+see <ndk>/sources/third_party/shaderc
+HEREDOC
 
 # libplacebo
 [ ! -d libplacebo ] && git clone --depth 1 --branch v$v_libplacebo --recurse-submodules https://code.videolan.org/videolan/libplacebo.git libplacebo
