@@ -1,40 +1,26 @@
-diff --git a/src/glsl/spirv_glslang.c b/src/glsl/spirv_glslang.c
-index ffb8f55..7c04672 100644
---- a/src/glsl/spirv_glslang.c
-+++ b/src/glsl/spirv_glslang.c
-@@ -67,6 +67,15 @@ static pl_spirv glslang_create(pl_log log, struct pl_spirv_version spirv_ver)
-             GLSLANG_VERSION_MINOR,
-             GLSLANG_VERSION_PATCH);
+diff --git a/src/glsl/spirv.c b/src/glsl/spirv.c
+index 8317ed7..f7f4104 100644
+--- a/src/glsl/spirv.c
++++ b/src/glsl/spirv.c
+@@ -31,6 +31,21 @@ static const struct spirv_compiler *compilers[] = {
  
-+    // libplacebo requires Vulkan 1.2 minimum
+ pl_spirv pl_spirv_create(pl_log log, struct pl_spirv_version spirv_ver)
+ {
++    pl_info(log, "Creating SPIR-V compiler with requested versions: "
++            "SPIR-V %u.%u, Vulkan %u.%u",
++            spirv_ver.spv_version >> 16, (spirv_ver.spv_version >> 8) & 0xff,
++            spirv_ver.env_version >> 22, (spirv_ver.env_version >> 12) & 0x3ff);
++
 +    const uint32_t min_spirv = PL_SPV_VERSION(1, 5);
 +    const uint32_t min_vulkan = PL_VLK_VERSION(1, 2);
 +    
-+    if (spirv->version.env_version < min_vulkan) {
-+        spirv->version.env_version = min_vulkan;
-+        spirv->version.spv_version = min_spirv;
++    if (spirv_ver.env_version < min_vulkan) {
++        pl_info(log, "Requested Vulkan version too low (< 1.2), clamping to minimum: "
++                "SPIR-V 1.5, Vulkan 1.2");
++        spirv_ver.env_version = min_vulkan;
++        spirv_ver.spv_version = min_spirv;
 +    }
 +
-     // Clamp to supported version by glslang
-     if (GLSLANG_SPV_MAX < spirv->version.spv_version) {
-         spirv->version.spv_version = GLSLANG_SPV_MAX;
-diff --git a/src/glsl/spirv_shaderc.c b/src/glsl/spirv_shaderc.c
-index e384382..b8f7ba7 100644
---- a/src/glsl/spirv_shaderc.c
-+++ b/src/glsl/spirv_shaderc.c
-@@ -55,6 +55,15 @@ static pl_spirv shaderc_create(pl_log log, struct pl_spirv_version spirv_ver)
-     PL_INFO(spirv, "shaderc SPIR-V version %u.%u rev %u",
-             ver >> 16, (ver >> 8) & 0xff, rev);
- 
-+    // libplacebo requires Vulkan 1.2 minimum
-+    const uint32_t min_spirv = PL_SPV_VERSION(1, 5);
-+    const uint32_t min_vulkan = PL_VLK_VERSION(1, 2);
-+    
-+    if (spirv->version.env_version < min_vulkan) {
-+        spirv->version.env_version = min_vulkan;
-+        spirv->version.spv_version = min_spirv;
-+    }
-+
-     // Clamp to supported version by shaderc
-     if (ver < spirv->version.spv_version) {
-         spirv->version.spv_version = ver;
+     for (int i = 0; i < PL_ARRAY_SIZE(compilers); i++) {
+         pl_spirv spirv = compilers[i]->create(log, spirv_ver);
+         if (!spirv)
