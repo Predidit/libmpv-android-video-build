@@ -28,7 +28,7 @@ mkdir -p deps && cd deps
 [ ! -d libx264 ] && git clone https://code.videolan.org/videolan/x264.git libx264 && cd libx264 && git reset --hard 023112c6f2f575c72e9f26274d183b70996fb542 && cd ..
 
 # ffmpeg
-[ ! -d ffmpeg ] && git clone --depth 1 --branch n$v_ffmpeg https://github.com/FFmpeg/FFmpeg.git ffmpeg
+[ ! -d ffmpeg ] && git clone --depth 1 --branch release/$v_ffmpeg https://github.com/FFmpeg/FFmpeg.git ffmpeg
 
 # freetype2
 [ ! -d freetype ] && git clone --depth 1 --branch VER-$v_freetype https://gitlab.freedesktop.org/freetype/freetype.git freetype
@@ -42,6 +42,9 @@ mkdir -p deps && cd deps
 # libass
 [ ! -d libass ] && git clone --depth 1 --branch $v_libass https://github.com/libass/libass.git libass
 
+# lcms2
+[ ! -d lcms2 ] && git clone --depth 1 -b $v_lcms2 https://github.com/mm2/Little-CMS.git lcms2
+
 # shaderc
 mkdir -p shaderc
 cat >shaderc/README <<'HEREDOC'
@@ -49,8 +52,11 @@ Shaderc sources are provided by the NDK.
 see <ndk>/sources/third_party/shaderc
 HEREDOC
 
+# libplacebo
+[ ! -d libplacebo ] && git clone --depth 1 --branch v$v_libplacebo --recurse-submodules https://code.videolan.org/videolan/libplacebo.git libplacebo
+
 # mpv
-[ ! -d mpv ] && git clone https://github.com/mpv-player/mpv.git mpv && cd mpv && git reset --hard 78d43740f52db817d98bcf24fb30a76ab6fa13ff && cd ..
+[ ! -d mpv ] && git clone https://github.com/mpv-player/mpv.git mpv && cd mpv && git reset --hard 32a164cc017acab50389f2194f720ccfd0b01a28 && cd ..
 
 # fftools_ffi
 [ ! -d fftools_ffi ] && git clone --branch main https://github.com/moffatman/fftools-ffi.git fftools_ffi && cd fftools_ffi && git reset --hard 10070acb2c090edda86dba431f6c281145ceb221 && cd ..
