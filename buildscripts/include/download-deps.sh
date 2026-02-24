@@ -53,7 +53,7 @@ see <ndk>/sources/third_party/shaderc
 HEREDOC
 
 # libplacebo
-[ ! -d libplacebo ] && git clone --depth 1 --branch v$v_libplacebo --recurse-submodules https://code.videolan.org/videolan/libplacebo.git libplacebo
+[ ! -d libplacebo ] && git clone --recurse-submodules https://code.videolan.org/videolan/libplacebo.git libplacebo && cd libplacebo && git reset --hard c93aa134ab62365ce1177efff99b8e1e66a818e7 && cd ..
 
 # mpv
 [ ! -d mpv ] && git clone https://github.com/mpv-player/mpv.git mpv && cd mpv && git reset --hard 32a164cc017acab50389f2194f720ccfd0b01a28 && cd ..
