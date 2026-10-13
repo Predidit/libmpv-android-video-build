@@ -58,9 +58,12 @@ verify_sha libx264 $v_libx264
 
 # ffmpeg
 if [ ! -d ffmpeg ]; then
-	git clone --depth 1 --branch n$v_ffmpeg https://github.com/FFmpeg/FFmpeg.git ffmpeg
+	git init -q ffmpeg
+	git -C ffmpeg remote add origin https://github.com/FFmpeg/FFmpeg.git
+	git -C ffmpeg fetch --depth 1 origin $v_ffmpeg
+	git -C ffmpeg checkout -q FETCH_HEAD
 fi
-verify_sha ffmpeg $sha_ffmpeg
+verify_sha ffmpeg $v_ffmpeg
 
 # freetype2
 if [ ! -d freetype ]; then
