@@ -21,7 +21,7 @@ mkdir -p deps && cd deps
 
 # mbedtls
 if [ ! -d mbedtls ]; then
-	git clone --depth 1 --branch v$v_mbedtls https://github.com/Mbed-TLS/mbedtls.git mbedtls
+	git clone --depth 1 --branch v$v_mbedtls --recurse-submodules --shallow-submodules https://github.com/Mbed-TLS/mbedtls.git mbedtls
 fi
 verify_sha mbedtls $sha_mbedtls
 

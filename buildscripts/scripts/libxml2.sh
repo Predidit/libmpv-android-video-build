@@ -24,8 +24,6 @@ cd _build$ndk_suffix
     --enable-static \
     --with-minimum \
     --with-threads \
-    --with-tree \
-    --without-lzma \
 
 make -j$cores
 make DESTDIR="$prefix_dir" install
