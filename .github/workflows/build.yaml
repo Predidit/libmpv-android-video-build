@@ -46,7 +46,7 @@ jobs:
       - uses: nttld/setup-ndk@v1
         with:
           link-to-sdk: true
-          ndk-version: r27c
+          ndk-version: r30
       - name: Symlink SDK
         working-directory: ./buildscripts
         run: |
