@@ -207,6 +207,7 @@ sed -i -e 's/#define FFMPEG_CONFIGURATION.*/#define FFMPEG_CONFIGURATION ""/' ..
 	--enable-parser=mpeg4 \
 	--enable-parser=mpeg4video \
 	--enable-parser=mpegvideo \
+	--enable-parser=dvbsub \
 	\
 	--enable-parser=aac* \
 	--enable-parser=ac3 \
